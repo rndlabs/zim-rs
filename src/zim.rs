@@ -273,7 +273,7 @@ fn parse_url_list(master_view: &Mmap, ptr_pos: u64, count: u32) -> Result<Vec<u6
 
 fn parse_article_list(master_view: &Mmap, ptr_pos: u64, count: u32) -> Result<Vec<u32>> {
     let start = ptr_pos as usize;
-    let end = (ptr_pos as u32 + count * 4) as usize;
+    let end = ptr_pos as usize + ((count as u64) * 4) as usize;
     let list_view = master_view.get(start..end).ok_or(Error::OutOfBounds)?;
 
     let mut cur = Cursor::new(list_view);
@@ -288,7 +288,7 @@ fn parse_article_list(master_view: &Mmap, ptr_pos: u64, count: u32) -> Result<Ve
 
 fn parse_cluster_list(master_view: &Mmap, ptr_pos: u64, count: u32) -> Result<Vec<u64>> {
     let start = ptr_pos as usize;
-    let end = (ptr_pos as u32 + count * 8) as usize;
+    let end = ptr_pos as usize + (count * 8) as usize;
     let cluster_list_view = master_view.get(start..end).ok_or(Error::OutOfBounds)?;
 
     let mut cluster_cur = Cursor::new(cluster_list_view);
